@@ -4,14 +4,16 @@
 ## Professional Summary
 Distinguished DevOps Architect with **19+ years of IT experience**, including **10+ years specializing in Cloud (AWS, Azure, GCP) and DevOps**. Proven expertise in designing scalable, secure, and automated infrastructure for global enterprises. Recently focused on pioneering **Agentic AI** and **Generative AI** solutions, including implementing **Model Context Protocol (MCP)** and **Agent2Agent (A2A)** communication protocols.
 
-Deep technical proficiency in **Kubernetes (EKS, AKS, GKE)**, **CI/CD Architecture**, and **Infrastructure as Code (Terraform, CloudFormation)**. Experienced in migrating monolithic applications to microservices, implementing **DevSecOps** practices, and optimizing content delivery with **Akamai**.
+Deep technical proficiency in **Kubernetes (EKS, AKS, GKE)**, **CI/CD Architecture**, and **Infrastructure as Code (Terraform, CloudFormation)**. Experienced as a **Site Reliability Engineer (SRE)** with strong knowledge of networking, security, and cloud-native solutions.
+
+Proven track record in securing and configuring scalable **EKS** clusters using **Terraform** and implementing **GitOps-driven** cluster management on **Azure AKS** using **ArgoCD**.  Expertise in optimizing content delivery with **Akamai** and automating AWS components (EC2, ELB, Security Groups, IAM) through **Terraform**.
 
 ## Technical Skills
 | Category | Technologies |
 | :--- | :--- |
 | **Cloud Platforms** | **AWS**, **Azure**, **Google Cloud Platform (GCP)** |
 | **Container & Orchestration** | Kubernetes (EKS, AKS, GKE), Docker, Helm, OpenShift |
-| **CI/CD & DevOps Tools** | Jenkins, GitHub Actions, Azure DevOps, AWS CodePipeline, GitLab, Ansible, Maven |
+| **CI/CD & DevOps Tools** | Jenkins, GitHub Actions, AWS CodeSuite (CodeCommit, CodeBuild, CodeDeploy), Azure DevOps, GitLab, ArgoCD, Ansible, Maven |
 | **Infrastructure as Code** | Terraform, AWS CloudFormation, Azure Resource Manager (ARM) |
 | **Security & Compliance** | SonarQube, Veracode, Twistlock, JFrog Xray, Akamai (WAF, Bot Manager) |
 | **Observability & Monitoring** | Prometheus, Grafana, ELK Stack (Elasticsearch, Logstash, Kibana), Splunk, Dynatrace, Azure Monitor, CloudWatch |
