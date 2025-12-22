@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'EKS Control Plane Layer.'
+
+Parameters:
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+  SecurityGroupIds:
+    Type: List<AWS::EC2::SecurityGroup::Id>
+  RoleArn:
+    Type: String
+
+Resources:
+  EKSCluster:
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: demo-cluster
+      Version: '1.31'
+      RoleArn: !Ref RoleArn
+      ResourcesVpcConfig:
+        SubnetIds: !Ref SubnetIds
+        SecurityGroupIds: !Ref SecurityGroupIds
+        EndpointPrivateAccess: true
+        EndpointPublicAccess: true
+      Logging:
+        ClusterLogging:
+          EnabledTypes:
+            - Type: api
+            - Type: audit
+            - Type: authenticator
+            - Type: controllerManager
+            - Type: scheduler
+
+Outputs:
+  ClusterName:
+    Value: !Ref EKSCluster
+  ClusterArn:
+    Value: !GetAtt EKSCluster.Arn
+  ClusterEndpoint:
+    Value: !GetAtt EKSCluster.Endpoint
+  ClusterCertificateAuthorityData:
+    Value: !GetAtt EKSCluster.CertificateAuthorityData

@@ -1,0 +1,61 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Root Stack: Orchestrates all modular templates.'
+
+Parameters:
+  GitHubConnectionArn:
+    Type: String
+    Description: ARN of the AWS CodeStar Connection for GitHub
+  GitHubRepo:
+    Type: String
+    Description: Format 'Username/RepoName'
+
+Resources:
+  NetworkStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: vpc.yaml # Note: Must be uploaded to S3 first
+
+  IAMStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: iam.yaml
+
+  SecurityStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: security-groups.yaml
+      Parameters:
+        VpcId: !GetAtt NetworkStack.Outputs.VpcId
+
+  EKSStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: eks-cluster.yaml
+      Parameters:
+        SubnetIds: !GetAtt NetworkStack.Outputs.PrivateSubnets
+        SecurityGroupIds: !GetAtt SecurityStack.Outputs.ControlPlaneSGId
+        RoleArn: !GetAtt IAMStack.Outputs.ClusterRoleArn
+
+  NodeGroupStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: node-group.yaml
+      Parameters:
+        ClusterName: !GetAtt EKSStack.Outputs.ClusterName
+        SubnetIds: !GetAtt NetworkStack.Outputs.PrivateSubnets
+        NodeRoleArn: !GetAtt IAMStack.Outputs.NodeRoleArn
+
+  CICDStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: cicd-pipeline.yaml
+      Parameters:
+        GitHubConnectionArn: !Ref GitHubConnectionArn
+        GitHubRepo: !Ref GitHubRepo
+        EKSClusterName: !GetAtt EKSStack.Outputs.ClusterName
+
+Outputs:
+  ClusterName:
+    Value: !GetAtt EKSStack.Outputs.ClusterName
+  GitHubRoleArn:
+    Value: !GetAtt IAMStack.Outputs.GitHubRoleArn

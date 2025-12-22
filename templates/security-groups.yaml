@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Security Group Layer: Control Plane and Node Group SGs.'
+
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+
+Resources:
+  ControlPlaneSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: EKS Control Plane Security Group
+      VpcId: !Ref VpcId
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-ControlPlane-SG'
+
+  NodeGroupSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: EKS Node Group Security Group
+      VpcId: !Ref VpcId
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-NodeGroup-SG'
+        - Key: kubernetes.io/cluster/demo-cluster
+          Value: owned
+
+  # Rules
+  ClusterToNodeIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Allow control plane to communicate with worker nodes
+      GroupId: !Ref NodeGroupSG
+      SourceSecurityGroupId: !Ref ControlPlaneSG
+      IpProtocol: tcp
+      FromPort: 1025
+      ToPort: 65535
+
+  NodeToClusterIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Allow worker nodes to communicate with control plane
+      GroupId: !Ref ControlPlaneSG
+      SourceSecurityGroupId: !Ref NodeGroupSG
+      IpProtocol: tcp
+      FromPort: 443
+      ToPort: 443
+
+  NodeToNodeIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Allow worker nodes to communicate with each other
+      GroupId: !Ref NodeGroupSG
+      SourceSecurityGroupId: !Ref NodeGroupSG
+      IpProtocol: -1
+
+Outputs:
+  ControlPlaneSGId:
+    Value: !Ref ControlPlaneSG
+  NodeGroupSGId:
+    Value: !Ref NodeGroupSG

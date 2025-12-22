@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'EKS Managed Node Group Layer.'
+
+Parameters:
+  ClusterName:
+    Type: String
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+  NodeRoleArn:
+    Type: String
+
+Resources:
+  ManagedNodeGroup:
+    Type: AWS::EKS::Nodegroup
+    Properties:
+      ClusterName: !Ref ClusterName
+      NodegroupName: demo-node-group
+      NodeRole: !Ref NodeRoleArn
+      Subnets: !Ref SubnetIds
+      ScalingConfig:
+        MinSize: 1
+        MaxSize: 2
+        DesiredSize: 1
+      InstanceTypes:
+        - t3.medium
+      CapacityType: ON_DEMAND
+      DiskSize: 20
+      Labels:
+        role: worker
+
+Outputs:
+  NodegroupArn:
+    Value: !GetAtt ManagedNodeGroup.Arn
