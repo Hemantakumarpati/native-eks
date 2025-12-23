@@ -16,21 +16,7 @@ For a production-grade demo, we have decoupled Infrastructure and Application de
 
 ---
 
-## 🌟 Simple Explanation: The "House" Analogy
-If you're explaining this to a non-technical manager or client, use this analogy:
 
-### 🏠 Pipeline A: The Foundation & Structure (Infrastructure)
-Imagine you are building a house. Pipeline A is like the **architects, plumbers, and electricians**. They build the foundation, the walls, and connect the water and power. 
-- You do this once at the beginning, or when you want to add a new room. 
-- It’s high-stakes work, so you want it to be very stable and secure.
-
-### 🍱 Pipeline B: The Furniture & Decor (Application)
-Pipeline B is like the **delivery service** that brings in new furniture, changes the curtains, or stocks the fridge. 
-- This happens every day! 
-- It’s fast, flexible, and you can change the sofa (the app code) without worrying about the house (the infrastructure) falling down.
-
-**Why keep them separate?** 
-Because you don’t want the person delivering the groceries (the developer) to accidentally knock down a support beam (the server config) while trying to put fruit in the bowl!
 
 
 ```mermaid
